@@ -42,7 +42,7 @@ with open("./coco.names", "r") as f:
 
 # Function to initialize the camera
 def initialize_camera():
-    camera = cv2.VideoCapture(0)  # Use 0 for the default camera
+    camera = cv2.VideoCapture(0)  # Change to 1 if using an external camera
     if not camera.isOpened():
         raise Exception("Could not open the camera.")
     return camera
@@ -60,10 +60,7 @@ def detect_misbehavior(frame):
     class_ids = []
     boxes = []
     confidences = []
-
-    # Custom logic parameters
     people_positions = []  # Store coordinates of detected people
-    detected_objects = {}   # To track other objects
     misbehaviors = []
 
     for output in outputs:
@@ -72,13 +69,13 @@ def detect_misbehavior(frame):
             class_id = np.argmax(scores)
             confidence = scores[class_id]
 
-            # Set a higher confidence threshold to avoid false positives
-            if confidence > 0.7:  # Increase threshold from 0.5 to 0.7
+            if confidence > 0.8:  # Adjusted confidence threshold
                 center_x = int(detection[0] * width)
                 center_y = int(detection[1] * height)
                 w = int(detection[2] * width)
                 h = int(detection[3] * height)
 
+                # Define x and y using the center coordinates
                 x = int(center_x - w / 2)
                 y = int(center_y - h / 2)
 
@@ -86,39 +83,42 @@ def detect_misbehavior(frame):
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-                # Track people
-                if classes[class_id] == "person":
-                    people_positions.append((center_x, center_y))
+    # Apply Non-Maximum Suppression
+    indices = cv2.dnn.NMSBoxes(boxes, confidences, 0.8, 0.4)  # Adjust the NMS threshold if necessary
 
-                # Track objects
-                if classes[class_id] not in detected_objects:
-                    detected_objects[classes[class_id]] = [(center_x, center_y)]
-                else:
-                    detected_objects[classes[class_id]].append((center_x, center_y))
+    # Filter boxes and update people positions
+    if len(indices) > 0:  # Check if any indices were returned
+        for i in indices.flatten():  # Flatten the list of indices
+            box = boxes[i]
+            x, y, w, h = box
+            people_positions.append((x + w // 2, y + h // 2))  # Use the center of the box
 
-    # Custom misbehavior logic
+    # Debug: Log detected persons and their positions
+    print(f"Detected persons: {len(people_positions)}, Positions: {people_positions}")
 
-    # 1. Detect multiple people close together (possible fight)
-    if len(people_positions) > 1:  # Only check for proximity if more than one person is detected
+    # Detect multiple people close together (possible fight)
+    if len(people_positions) > 1:
         for i in range(len(people_positions)):
             for j in range(i + 1, len(people_positions)):
                 distance = np.linalg.norm(np.array(people_positions[i]) - np.array(people_positions[j]))
-                if distance < 100:  # If people are too close together
+                print(f"Distance between {people_positions[i]} and {people_positions[j]}: {distance}")  # Debug logging
+
+                if distance < 100:  # Distance threshold
                     misbehaviors.append("Potential fight detected: people too close!")
                     break  # Exit the loop if misbehavior is detected
 
-    # 2. Detect if a person is holding a dangerous object (e.g., knife, bottle)
+    # Dangerous objects detection
     dangerous_objects = ["knife", "bottle"]
-    if "person" in detected_objects:
+    if "person" in class_ids:
         for obj in dangerous_objects:
-            if obj in detected_objects:
+            if obj in classes:
                 misbehaviors.append(f"Danger detected: Person holding a {obj}!")
 
-    # 3. Avoid repeating the same misbehavior if nothing has changed
     if not misbehaviors:  # No misbehavior detected
         return []
-    
+
     return misbehaviors
+
 
 
 # Thread for YOLO processing
@@ -148,7 +148,9 @@ def yolo_detection_thread():
                         db.session.add(new_alert)
                         db.session.commit()
 
-                    socketio.emit('alert', {'message': alert_message})
+                    # Emit alerts with a type for styling
+                    alert_type = "danger" if "fight" in alert_message else "warning"  # Customize as needed
+                    socketio.emit('alert', {'message': alert_message, 'type': alert_type})
 
                 previous_misbehavior = misbehaviors  # Update previous misbehavior
             else:
