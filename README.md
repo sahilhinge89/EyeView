@@ -10,6 +10,12 @@ EyeView is an intelligent camera system designed to detect misbehavior in real t
 - Alerts for dangerous objects being held by individuals
 - Database integration to store alerts
 
+## License
+
+This project is licensed under a **Proprietary License**. Copyright © 2024 Parth Bhosle, Sahil Hinge. All Rights Reserved.
+
+For further inquiries or permissions, please contact the repository owners.
+
 ## Requirements
 
 To run this application, you need the following:
