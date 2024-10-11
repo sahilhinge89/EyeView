@@ -1,110 +1,128 @@
-App.css
-
-/* General styling for the app */
-.App {
+/* Global styles */
+body {
+  margin: 0;
   font-family: 'Arial', sans-serif;
-  text-align: center;
-  background-color: #f4f4f9;
-  min-height: 100vh;
+  background-color: #112D4E;
+  color: #DBE2EF;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+  flex-direction: row; /* Default layout */
+}
+
+.sidebar {
+  background-color: #0b0b0d;
   padding: 20px;
+  width: 250px;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
 }
 
-header {
-  background-color: #333;
-  padding: 20px 0;
-  color: white;
-  font-size: 2.5rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.sidebar-header h2 {
+  color: #3F72AF;
   margin-bottom: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 24px;
 }
 
-h1 {
-  margin: 0;
+.sidebar nav a {
+  display: block;
+  color: #DBE2EF;
+  margin-bottom: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
 }
 
-/* Styling the video container */
-.video-container {
+.sidebar nav a:hover {
+  color: #3F72AF;
+}
+
+.logout a {
+  color: #DBE2EF;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(43, 43, 43, 0.8), #112D4E);
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.search-bar input {
+  padding: 12px 16px;
+  width: 350px;
+  border: 2px solid #3F72AF;
+  border-radius: 30px;
+  background-color: #F9F7F7;
+}
+
+/* Flex container for the main content */
+.content {
+  display: flex;
+  flex: 1; /* Take remaining space */
+  margin-top: 10px; /* Space between top bar and content */
+}
+
+/* Camera feed container */
+.camera-feed-container {
+  flex: 3; /* Larger area for the video feed */
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
-  position: relative;
+  background-color: #f5f5f5;
+  margin-right: 10px; /* Space between video feed and alerts */
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden; /* Prevents overflow */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
 }
 
+/* Video feed styles */
 .video-feed {
-  border: 5px solid #333;
-  border-radius: 10px;
-  max-width: 100%;
-  height: auto;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-}
+  width: 100%; /* Full width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 60%; /* Prevent overflow */
+  object-fit: cover; /* Cover the container */
 
-/* Styling the alerts section */
-.alerts-container {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  border-radius: 10px;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-/* Each alert message */
-.alert {
-  padding: 15px;
-  margin: 10px 0;
-  background-color: #f8d7da;
-  border: 1px solid #f5c2c7;
-  border-radius: 5px;
-  color: #721c24;
-  font-size: 1rem;
-  box-shadow: 0px 2px 8px rgba(255, 0, 0, 0.2);
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-/* Highlight even more if there are multiple alerts */
-.alert:nth-child(odd) {
-  background-color: #f1c40f;
-  border-color: #f39c12;
-  color: #2c3e50;
-}
-
-/* Alert hover effect */
-.alert:hover {
-  background-color: #f5c2c7; /* Darker shade on hover */
-  transform: scale(1.02);
-}
-
-/* Future feature button */
-.future-feature-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #333;
-  color: white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.future-feature-button:hover {
-  background-color: #555;
-  transform: scale(1.05);
 }
 
 
+
+
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column; /* Stack sidebar and content vertically */
+  }
+
+  .sidebar {
+    width: 100%; /* Sidebar takes full width */
+    height: auto; /* Auto height */
+  }
+
+  .camera-feed-container {
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 10px; /* Add bottom margin */
+  }
+
+  .search-bar input {
+    width: 100%; /* Full-width search bar on mobile */
+  }
+
+
+}
