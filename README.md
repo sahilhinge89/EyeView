@@ -109,4 +109,4 @@ The application will start streaming video from the camera and will print alerts
 If you have suggestions or improvements, feel free to open an issue or submit a pull request.
 ```
 
-This now includes the note that the application is a work in progress. Let me know if you need more adjustments!
+This now includes the note that the application is a work in progress. Let us know if you need more adjustments!
