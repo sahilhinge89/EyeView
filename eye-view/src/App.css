@@ -1,106 +1,153 @@
-/* Global styles */
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #112D4E;
-  color: #DBE2EF;
-}
-
 .app {
-  display: flex;
-  height: 100vh;
-  flex-direction: row; /* Default layout */
-}
-
-.sidebar {
-  background-color: #0b0b0d;
-  padding: 2rem;
-  padding-top: 2rem;
-  width: 15rem;
-  min-height: 40rem;
-  flex-shrink: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light background for the entire app */
+  min-height: 100vh; /* Ensures full height of the viewport */
   display: flex;
   flex-direction: column;
+}
+
+.navbar {
+  display: flex;
   justify-content: space-between;
+  padding: 1rem 2rem; /* Added padding for a spacious layout */
+  background-color: #282c34; /* Dark background for the navbar */
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
 }
 
-.sidebar-header h2 {
-  color: #3F72AF;
-  margin-bottom: 2rem;
-  font-size: 2rem;
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0; /* Reset margin */
+  padding: 0; /* Reset padding */
 }
 
-.sidebar nav a {
-  display: block;
-  color: #DBE2EF;
-  margin-bottom: 1.5rem;
+.nav-links li {
+  margin: 0 15px;
+}
+
+.nav-links a {
+  color: white;
   text-decoration: none;
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
+  transition: color 0.3s; /* Smooth transition for hover effect */
 }
 
-.sidebar nav a:hover {
-  color: #3F72AF;
+.nav-links a:hover {
+  color: #61dafb; /* Change color on hover */
 }
 
-.logout a {
-  color: #DBE2EF;
-  text-decoration: none;
-  font-size: 2rem;
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.create-account {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #61dafb; /* Bright button color */
+  color: #282c34;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.create-account:hover {
+  background-color: #51a8e2; /* Darker shade on hover */
+}
+
+.hero-section {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.video-container {
+  width: 45rem;
+  margin: 20px auto; /* Centered video container */
+  border: 1px solid #ddd; /* Light border around the video */
+  border-radius: 10px;
+  overflow: hidden; /* Prevents overflow of video */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  background-color: #fff; /* White background for video container */
+}
+
+.live-video {
+  width: 100%; /* Full width video */
+  height: auto; /* Maintain aspect ratio */
 }
 
 .main-content {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  background: linear-gradient(135deg, rgba(43, 43, 43, 0.8));
-  min-height: 40rem;
-}
-
-
-/* Flex container for the main content */
-.content {
-  display: flex;
-  flex: 1; /* Take remaining space */
-  margin-top: 2rem; /* Space between top bar and content */
-  margin-bottom: 2rem;
-}
-
-/* Camera feed container */
-.camera-feed-container {
-  flex: 3; /* Larger area for the video feed */
-  display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
-  margin-right: 2rem; /* Space between video feed and alerts */
-  overflow: hidden; /* Prevents overflow */
-  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 1); /* Shadow for depth */
+  padding: 20px;
+  width: 100%; /* Full width for main content */
 }
 
-/* Video feed styles */
-.video-feed {
-  width: 100%; /* Full width */
-  max-height: 40rem;
-  object-fit: cover; /* Cover the container */
+.alerts-container {
+  width: 80%;
+  margin: 20px auto; /* Centered alerts container */
+  background-color: #f9f9f9; /* Light background for alerts */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
 }
 
+.alert {
+  padding: 10px; /* Padding for alert items */
+  border-bottom: 1px solid #ddd; /* Light border between alerts */
+  color: #333; /* Dark text color for alerts */
+}
 
-/* Responsive styling */
+.alert:last-child {
+  border-bottom: none; /* No border for the last alert */
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .app {
-    flex-direction: column; /* Stack sidebar and content vertically */
+  .navbar {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center elements */
   }
 
-  .sidebar {
-    width: 100%; /* Sidebar takes full width */
-    height: auto; /* Auto height */
+  .nav-links {
+    flex-direction: column; /* Stack links vertically */
+    width: 100%; /* Full width for links */
+    padding: 0; /* Remove padding */
   }
 
-  .camera-feed-container {
-    margin-right: 0; /* Remove right margin */
-    margin-bottom: 10px; /* Add bottom margin */
+  .nav-links li {
+    margin: 10px 0; /* Add margin for spacing */
   }
 
+  .video-container {
+    width: 90%; /* Increase width for smaller screens */
+  }
+
+  .alerts-container {
+    width: 90%; /* Increase width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 1rem; /* Adjust padding for smaller screens */
+  }
+
+  .create-account {
+    width: 100%; /* Full width button on small screens */
+    margin-top: 10px; /* Add spacing above the button */
+  }
+
+  .hero-section {
+    padding: 1rem; /* Reduce padding for small screens */
+  }
+
+  .video-container {
+    margin: 10px auto; /* Reduce margin for small screens */
+  }
+
+  .alerts-container {
+    padding: 10px; /* Reduce padding for smaller alerts */
+  }
 }

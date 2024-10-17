@@ -1,53 +1,70 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
-import './App.css'; // Ensure custom styles are linked
+import './App.css'; // Custom CSS styles
 
-// Connect to Flask backend at localhost:5000
-const socket = io(' http://127.0.0.1:5000');
+// Initialize socket connection (replace with your backend URL if not localhost)
+const socket = io('http://127.0.0.1:5000');
 
+// App component
 function App() {
   return (
     <div className="app">
-      <Sidebar />
+      <NavBar />
+      <HeroSection />
       <MainContent />
     </div>
   );
 }
 
-// Sidebar Component (Left side menu)
-function Sidebar() {
+// NavBar Component
+function NavBar() {
   return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <h2>EyeView</h2>
+    <nav className="navbar">
+      <div className="logo">EyeView</div>
+      <ul className="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#assets">Alert</a></li>
+        <li><a href="#features">History</a></li>
+        <li><a href="#pricing">About</a></li>
+        <li><a href="https://mail.google.com/" className="contact-link">Contact Us</a></li>
+      </ul>
+      <div className="nav-actions">
+        <button className="create-account">Create Account</button>
       </div>
-      <nav>
-        <a href="#">Dashboard</a>
-        <a href="#">Admin</a>
-        <a href="#">Alert</a>
-        <a href="#">Live Cam</a>
-        <a href="#">History</a>
-        <a href="#">Control Panel</a>
-      </nav>
-      <div className="logout">
-        <a href="#">Logout</a>
+    </nav>
+  );
+}
+
+// HeroSection Component with Live Video Feed
+function HeroSection() {
+  return (
+    <div className="hero-section">
+      <div className="hero-content">
+        <div className="video-container">
+          <img
+            src="http://127.0.0.1:5000/video_feed"
+            autoPlay
+            muted
+            controls
+            alt='Live Video Feed'
+            className="live-video"
+            style={{ width: "100%", height: "auto" }} // Optional: Adjust video dimensions
+          />
+        </div>
       </div>
     </div>
   );
 }
 
-
-
-// Main content (selected live camera and other cams)
+// MainContent Component for Alerts
 function MainContent() {
-  const videoRef = useRef(null);
   const [alerts, setAlerts] = useState([]); // State to hold alerts
 
   useEffect(() => {
     // Listen for alerts from the server
     socket.on('alert', (data) => {
       console.log('Received alert:', data);
-      setAlerts(prevAlerts => [...prevAlerts, data]); // Add new alert to state
+      setAlerts((prevAlerts) => [...prevAlerts, data]); // Add new alert to state
     });
 
     // Clean up socket connection on unmount
@@ -56,30 +73,10 @@ function MainContent() {
     };
   }, []);
 
-  useEffect(() => {
-    const videoElement = videoRef.current;
-
-    // Clean up the video source when the component unmounts
-    return () => {
-      if (videoElement) {
-        videoElement.src = '';
-      }
-    };
-  }, []);
-
   return (
     <div className="main-content">
-   
-      <div className="camera-feed">
-        <img
-          src=" http://127.0.0.1:5000/video_feed"
-          alt="Live Camera Feed"
-          className="video-feed"
-        />
-      </div>
-
+      {/* Render only alerts here */}
       <div className="alerts-container">
-  
         {alerts.map((alert, index) => (
           <div key={index} className="alert">
             {alert.message}
