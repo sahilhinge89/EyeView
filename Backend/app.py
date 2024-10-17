@@ -92,7 +92,7 @@ timeout_duration = 10  # Time in seconds before releasing the camera
 # Function to initialize the camera
 def initialize_camera():
     global camera
-    camera = cv2.VideoCapture(0)  # Change to 1 if using an external camera
+    camera = cv2.VideoCapture(1)  # Change to 1 if using an external camera
 
     if not camera.isOpened():
         print("Error: Could not open the camera.")
